@@ -1,3 +1,4 @@
+---@class keysitter.Module
 local TsTo = {}
 
 -- 'nvim-treesitter-textobjects' has an _end_ for queries
@@ -5,6 +6,11 @@ TsTo.has_end = true
 
 ---Sets up a Neovim autocommand for TreeSitter textobject initialization.
 ---Create an augroup and registers the callback to run on specified events.
+---
+---@param event string|string[] Event(s) that will trigger the handler, see `:h nvim_create_autocmd()`.
+---@param group string name or id of the autocommand group to match against.
+---@param callback function|string callable function when the event(s) is triggered.
+---@param opts? keysitter.SetupOpts Additional configs for autocmd & augroup
 function TsTo.setup(event, group, callback, opts)
   opts = opts or {}
   local desc = opts.desc or ""
@@ -20,6 +26,10 @@ end
 
 ---Validates that a textobject query exists in the treesitter query file.
 ---Checks the "textobjects" query for captures matching the given pattern.
+---
+---@param query_name string The textobject name (e.g., "function", "class")
+---@param query_attribute string The attribute type ("outer" or "inner")
+---@return string?, boolean
 function TsTo.textobject_check(query_name, query_attribute)
   -- Construct the full query pattern to search for
   -- (e.g., "function.outer", "block.inner", "statement.lhs")
@@ -41,10 +51,21 @@ function TsTo.textobject_check(query_name, query_attribute)
 end
 
 ---Factory function that creates TreeSitter-textobject keymap handlers.
----Each returned function creates a vim.keymap.set call with consistent defaults.
+---Each returned function creates a `vim.keymap.set` call with consistent defaults.
+---
+---@param default_motion string Default motion prefix (e.g., "a", "i", "]", "[")
+---@param default_mode string|string[] Default vim modes (e.g., {"x", "o"} or {"n", "x", "o"})
+---@param action_fn function Function to call for the textobject action
+---@return fun(textobject: string, key: string, opts:keysitter.KeymapOpts, vim_opts:keysitter.VimKeymapOpts)
 local function create_keymap_fn(default_motion, default_mode, action_fn)
   ---Create a keymap handler with the specified configuration.
+  ---
   ---Note: opts & vim_opts are normalized, and can't be nil at this point.
+  ---
+  ---@param textobject string The textobject name for the action
+  ---@param key string The key to bind for this mapping
+  ---@param opts keysitter.KeymapOpts Override options for this specific mapping
+  ---@param vim_opts keysitter.VimKeymapOpts options for `vim.keymap.set()`
   return function(textobject, key, opts, vim_opts)
     -- Use provided configs or fall back to default
     local mode = opts.mode or default_mode
