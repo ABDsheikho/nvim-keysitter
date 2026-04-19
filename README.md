@@ -298,6 +298,39 @@ return:
 
 - A Keysitter instance (`keysitter.Keysitter`)
 
+### `goto_start()`
+
+Create keymaps for moving to the start of the next and previous textobject.
+Convenient method that chains `next_start()` and `previous_start()`.
+
+param:
+
+- opts (`keysitter.KeymapOpts`): _optional_
+  User options (overrides defaults)
+- vim_opts (`keysitter.VimKeymapOpts`): _optional_
+  options for `vim.keymap.set()`, see `:h vim.keymap.set()`
+
+return:
+
+- A Keysitter instance (`keysitter.Keysitter`)
+
+### `goto_end()`
+
+Create keymaps for moving to the end of the next and previous textobject.
+Convenient method that chains `next_end()` and `previous_end()`.
+Only available if the textobject-module supports end for its textobjects.
+
+param:
+
+- opts (`keysitter.KeymapOpts`): _optional_
+  User options (overrides defaults)
+- vim_opts (`keysitter.VimKeymapOpts`): _optional_
+  options for `vim.keymap.set()`, see `:h vim.keymap.set()`
+
+return:
+
+- A Keysitter instance (`keysitter.Keysitter`)
+
 ### `next_start()`
 
 Create a keymap for moving to the start of the next textobject.

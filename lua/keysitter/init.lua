@@ -244,8 +244,29 @@ function Keysitter:prev(opts, vim_opts)
   return self:previous_start(opts, vim_opts):previous_end(opts, vim_opts)
 end
 
--- TODO:write a good desc
---
+---Create keymaps for moving to the start of the next and previous textobject.
+---Convenient method that chains next_start and previous_start.
+---
+---@param opts keysitter.KeymapOpts? User options (overrides defaults)
+---@param vim_opts keysitter.VimKeymapOpts? options for `vim.keymap.set()`
+---@return keysitter.Keysitter self The same instance (for method chaining/piping)
+function Keysitter:goto_start(opts, vim_opts)
+  return self:next_start(opts, vim_opts):previous_start(opts, vim_opts)
+end
+
+---Create keymaps for moving to the end of the next and previous textobject.
+---Convenient method that chains next_end and previous_end.
+---Only available if the TextObject-module supports end for its textobjects.
+---
+---@param opts keysitter.KeymapOpts? User options (overrides defaults)
+---@param vim_opts keysitter.VimKeymapOpts? options for `vim.keymap.set()`
+---@return keysitter.Keysitter self The same instance (for method chaining/piping)
+function Keysitter:goto_end(opts, vim_opts)
+  return self:next_end(opts, vim_opts):previous_end(opts, vim_opts)
+end
+
+-- TODO:write a better desc for setup() function
+
 ---Delegates setup to the loaded Keysitter module.
 ---Allows modules to configure their own autocommands and callbacks.
 ---
