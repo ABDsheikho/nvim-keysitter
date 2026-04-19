@@ -83,44 +83,40 @@ local function create_keymap_fn(default_motion, default_mode, action_fn)
   end
 end
 
--- Load nvim-treesitter-textobjects modules for textobject selection and movement
-local select = require("nvim-treesitter-textobjects.select")
-local move = require("nvim-treesitter-textobjects.move")
-
 ---Create a keymap function for selecting the outer (around) textobject.
 ---Uses "a" motion prefix and operates in visual and operator-pending modes.
 TsTo.outer_select = create_keymap_fn("a", { "x", "o" }, function(textobject)
-  select.select_textobject(textobject, "textobjects")
+  require("nvim-treesitter-textobjects.select").select_textobject(textobject, "textobjects")
 end)
 
 ---Create a keymap function for selecting the inner textobject.
 ---Uses "i" motion prefix and operates in visual and operator-pending modes.
 TsTo.inner_select = create_keymap_fn("i", { "x", "o" }, function(textobject)
-  select.select_textobject(textobject, "textobjects")
+  require("nvim-treesitter-textobjects.select").select_textobject(textobject, "textobjects")
 end)
 
 ---Create a keymap function for moving to the start of the next textobject.
 ---Uses "]" motion prefix and operates in normal, visual, and operator-pending modes.
 TsTo.next_start = create_keymap_fn("]", { "n", "x", "o" }, function(textobject)
-  move.goto_next_start(textobject, "textobjects")
+  require("nvim-treesitter-textobjects.move").goto_next_start(textobject, "textobjects")
 end)
 
 ---Create a keymap function for moving to the end of the next textobject.
 ---Uses "]" motion prefix and operates in normal, visual, and operator-pending modes.
 TsTo.next_end = create_keymap_fn("]", { "n", "x", "o" }, function(textobject)
-  move.goto_next_end(textobject, "textobjects")
+  require("nvim-treesitter-textobjects.move").goto_next_end(textobject, "textobjects")
 end)
 
 ---Create a keymap function for moving to the start of the previous textobject.
 ---Uses "[" motion prefix and operates in normal, visual, and operator-pending modes.
 TsTo.previous_start = create_keymap_fn("[", { "n", "x", "o" }, function(textobject)
-  move.goto_previous_start(textobject, "textobjects")
+  require("nvim-treesitter-textobjects.move").goto_previous_start(textobject, "textobjects")
 end)
 
 ---Create a keymap function for moving to the end of the previous textobject.
 ---Uses "[" motion prefix and operates in normal, visual, and operator-pending modes.
 TsTo.previous_end = create_keymap_fn("[", { "n", "x", "o" }, function(textobject)
-  move.goto_previous_end(textobject, "textobjects")
+  require("nvim-treesitter-textobjects.move").goto_previous_end(textobject, "textobjects")
 end)
 
 return TsTo
