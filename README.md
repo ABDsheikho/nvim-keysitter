@@ -99,12 +99,35 @@ end, { desc = 'Set keysitter keymaps for nvim-treesitter-textobjects' })
 
 ### vim.pack
 
-### lazy.nvim
-
-#### As dependency for `nvim-treesitter-textobjects`
+Requires nvim >= 0.12
 
 ```lua
-return {
+vim.pack.add {
+  -- make sure you already have those dependencies installed
+  { src = 'https://github.com/nvim-treesitter/nvim-treesitter'},
+  { src = 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects'},
+
+  { src = 'https://github.com/ABDsheikho/nvim-keysitter' },
+}
+
+-- now you can use it as any other plugin/module
+local keysitter = require 'keysitter'
+local tsto = keysitter.new('treesitter-textobjects', { group_prefix = 'o' })
+
+-- setup function, see [setup](#setup)
+tsto.setup({ 'FileType', 'BufEnter' }, 'keysitter', function()
+  -- your keymaps go here
+  tsto:set('f', 'function'):around():inner():next():prev()
+
+end, { desc = 'Set keysitter keymaps for nvim-treesitter-textobjects' })
+```
+
+### lazy.nvim
+
+#### As a dependency for `nvim-treesitter-textobjects`
+
+```lua
+{
   'nvim-treesitter/nvim-treesitter-textobjects',
   branch = 'main',
   dependencies = {
@@ -127,10 +150,10 @@ return {
 }
 ```
 
-#### As stand alone plugin
+#### As a standalone plugin
 
 ```lua
-return {
+{
   'ABDsheikho/nvim-keysitter',
   dependencies = {
     'nvim-treesitter/nvim-treesitter',
@@ -399,13 +422,12 @@ ______________________________________________________________________
 
 - [ ] make `swap` functionality for `nvim-treesitter-textobjects`.
 - [ ] check for other potential plugins (maybe `gitsings`?).
-- [ ] add vim.pack installation section.
 
 ______________________________________________________________________
 
 ## Acknowledgment
 
-My main motivation was write something for [`nvim-treesitter/nvim-treesitter-textobjects`](https://github.com/nvim-treesitter/nvim-treesitter-textobjects)
+My main motivation was to write something for [`nvim-treesitter/nvim-treesitter-textobjects`](https://github.com/nvim-treesitter/nvim-treesitter-textobjects)
 that simplifies my config, which led me to separate it into its own plugin.
 Thanks to them for their incredible work.
 
